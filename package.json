@@ -1,0 +1,26 @@
+{
+  "name": "express-files-example",
+  "version": "1.0.0",
+  "description": "Host a simple Express server for serving and receiving files",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codebycaleb/express-files-example.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codebycaleb/express-files-example/issues"
+  },
+  "homepage": "https://github.com/codebycaleb/express-files-example#readme",
+  "dependencies": {
+    "busboy": "^0.3.0",
+    "express": "^4.16.4",
+    "lodash": "^4.17.11",
+    "uuid": "^3.3.2"
+  }
+}
