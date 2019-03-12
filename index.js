@@ -61,8 +61,9 @@ app.post('/files', (req, res) => {
     }
   });
   busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-    const new_filename = `${FILES_ROOT}/${uuidv4().toUpperCase()}.txt`; // creates a new UUID filename
-    const writeStream = fs.createWriteStream(new_filename, { // alternatively, could use `filename` arg
+    const new_filename = `${uuidv4().toUpperCase()}.txt` // creates a new UUID filename
+    const filepath = `${FILES_ROOT}/${new_filename}`; // appends it to the path
+    const writeStream = fs.createWriteStream(filepath, { // alternatively, could use `filename` arg
       flags: 'wx',
       encoding: 'utf8',
       mode: 0666
