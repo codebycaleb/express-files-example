@@ -24,7 +24,8 @@ app.get('/files', (req, res, next) => {
       if (stat.isFile() && !filename.startsWith('.')) { // filters out directories and dotfiles (like .gitignore)
         return [{
           filename: filename,
-          createdAt: stat.ctime.toISOString() // https://nodejs.org/dist/v0.8.10/docs/api/fs.html#fs_class_fs_stats
+          createdAt: stat.ctime.toISOString(), // https://nodejs.org/dist/v0.8.10/docs/api/fs.html#fs_class_fs_stats
+          size: stat.size
         }]
       }
       return [];
