@@ -25,14 +25,14 @@ app.get('/files', (req, res, next) => {
         return [{
           filename: filename,
           createdAt: stat.ctime.toISOString(), // https://nodejs.org/dist/v0.8.10/docs/api/fs.html#fs_class_fs_stats
-          size: stat.size
-        }]
+        }];
       }
       return [];
     });
-    const sorted = _.orderBy(mapped, 'createdAt', 'desc') // https://lodash.com/docs/4.17.11#orderBy
+    const sorted = _.orderBy(mapped, ['createdAt'], ['desc']) // https://lodash.com/docs/4.17.11#orderBy
+    const filenames = _.map(sorted, file => _.pick(file, ['filename'])) // https://lodash.com/docs/4.17.11#pick
     res.send({
-      files: sorted
+      files: filenames
     });
   });
 }, (req, res) => res.status(500).send('Error retrieving files')); // make sure you've created the directory!
@@ -48,6 +48,25 @@ app.get('/files/:name', (req, res, next) => {
       next(); // calls error-handling function defined below
     }
   });
+}, (req, res) => res.sendStatus(404));
+
+app.get('/files/:name/meta', (req, res, next) => {
+  const filename = req.params.name;
+  console.log('pre-stat')
+  const stat = fs.statSync(`${FILES_ROOT}/${filename}`); // https://nodejs.org/dist/v0.8.10/docs/api/fs.html#fs_fs_statsync_path
+  console.log('post-stat')
+  if (stat.isFile() && !filename.startsWith('.')) { // filters out directories and dotfiles (like .gitignore)
+    console.log('pre-return')
+    res.send({
+      filename: filename,
+      createdAt: stat.ctime.toISOString(), // https://nodejs.org/dist/v0.8.10/docs/api/fs.html#fs_class_fs_stats
+      size: stat.size,
+      blocks: stat.blocks
+    });
+  } else {
+    console.log('pre-next')
+    next(); // if filename is a real file but doesn't hit our criteria, throw a 404
+  }
 }, (req, res) => res.sendStatus(404));
 
 app.post('/files', (req, res) => {
