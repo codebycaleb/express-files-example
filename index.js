@@ -52,11 +52,8 @@ app.get('/files/:name', (req, res, next) => {
 
 app.get('/files/:name/meta', (req, res, next) => {
   const filename = req.params.name;
-  console.log('pre-stat')
   const stat = fs.statSync(`${FILES_ROOT}/${filename}`); // https://nodejs.org/dist/v0.8.10/docs/api/fs.html#fs_fs_statsync_path
-  console.log('post-stat')
   if (stat.isFile() && !filename.startsWith('.')) { // filters out directories and dotfiles (like .gitignore)
-    console.log('pre-return')
     res.send({
       filename: filename,
       createdAt: stat.ctime.toISOString(), // https://nodejs.org/dist/v0.8.10/docs/api/fs.html#fs_class_fs_stats
@@ -64,7 +61,6 @@ app.get('/files/:name/meta', (req, res, next) => {
       blocks: stat.blocks
     });
   } else {
-    console.log('pre-next')
     next(); // if filename is a real file but doesn't hit our criteria, throw a 404
   }
 }, (req, res) => res.sendStatus(404));
