@@ -30,6 +30,9 @@ curl -v -w "\n" localhost:3000/files
 # GET /files/:name (requires a "/files/hello-world.txt" to be present)
 curl -v -w "\n" localhost:3000/files/hello-world.txt
 
+# GET /files/:name/meta (requires a "/files/hello-world.txt" to be present)
+curl -v -w "\n" localhost:3000/files/hello-world.txt/meta
+
 # POST /files (requires a "/files/hello-world.txt" to be present)
 curl -v -w "\n" -F file=@files/hello-world.txt" localhost:3000/files
 ```
