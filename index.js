@@ -43,7 +43,7 @@ app.get('/files/:name', (req, res, next) => {
     dotfiles: 'deny' // don't serve dotfiles
   };
   const filename = req.params.name;
-  res.download(`/${filename}`, filename, options, err => { // https://expressjs.com/en/4x/api.html#res.download
+  res.sendFile(filename, options, err => {
     if (err) { // might be worth logging the error here, but it's almost certainly because the file does not exist
       next(); // calls error-handling function defined below
     }
